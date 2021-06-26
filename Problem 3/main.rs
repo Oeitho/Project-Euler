@@ -1,6 +1,5 @@
 use std::option::Option;
 use std::option::Option::{Some, None};
-use std::vec::Vec;
 
 fn main() {
     let number = 600851475143;
@@ -11,31 +10,17 @@ fn main() {
     }
 }
 
-fn largest_prime_factor(product: u64) -> Option<u64> {
-    let potential_prime_factors = potential_prime_factors_reversed(product);
-    for prime in potential_prime_factors {
-        if product % prime == 0 {
-            return Some(prime);
-        }
+fn largest_prime_factor(product: u64) -> Option<u64>{
+    if product < 2 {
+        return None
     }
-    None
-}
-
-fn potential_prime_factors_reversed(product: u64) -> Vec<u64> {
-    let mut found_primes = vec![2];
-    let square_root_of_product = (product as f32).sqrt() as u64 + 1;
-    for n in 3..square_root_of_product {
-        let mut is_prime = true;
-        for prime in &found_primes {
-            if n % prime == 0 {
-                is_prime = false;
-                break;
-            }
+    let mut i = 2;
+    let mut largest_prime_factor = product;
+    while i * i <= largest_prime_factor {
+        while largest_prime_factor % i == 0 && largest_prime_factor != i {
+            largest_prime_factor /= i;
         }
-        if is_prime {
-            found_primes.push(n);
-        }
+        i += 1
     }
-    found_primes.reverse();
-    found_primes
+    Some(largest_prime_factor)
 }
